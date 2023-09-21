@@ -10,10 +10,7 @@
 Std_ReturnType ret = E_NOT_OK;
 void intialization (void);
 
-volatile uint8 flag = 0;
-uint8 array_slave[5];
-volatile uint8 flag_stop = 1;
-uint8 num_on_7seg = 0;
+
 
 int main(void) {
     intialization();
@@ -21,7 +18,7 @@ int main(void) {
     while(1)
     {
         
-        /*adc start conv to get temperature and smoke level*/
+/*===============adc start conv to get temperature and smoke level===============*/
         if(0 == adc_flag){
              ret = ADC_Start_Conversion_Interrupt_Mode(&adc_temp_wl ,ADC_CHANNEL_AN0);
         }else if(1 == adc_flag){
@@ -29,7 +26,7 @@ int main(void) {
         }
         else{/*Nothing*/}
         
-        /*convert digital output to analog for processing*/
+/*=============convert digital output to analog for processing=============*/
         temperature = 4.88f * conv_result_temp;
         water_level = 4.88f * conv_result_water_level;
         
@@ -52,7 +49,7 @@ int main(void) {
          temp_level_status = array_slave[4];
         
         if(START == Start_status){
-            /*level of water*/
+/*==============================level of water==============================*/
             if(LEVEL_1 == water_level_status && Water_Level_1 == water_level){
                 flag_water = TRUE;
                 ret = Dc_Motor_Stop(&dc_motor2);
@@ -66,7 +63,7 @@ int main(void) {
                 ret = Dc_Motor_Turn_Right(&dc_motor2);
             }
             
-            /*temperature*/
+/*==============================temperature chosen==============================*/
             
             if(COLD == temp_level_status && COLD_TEMP == temperature){
                 flag_temp = TRUE;
@@ -75,9 +72,11 @@ int main(void) {
             }else if(HOT == temp_level_status && HOT_TEMP == temperature){
                 flag_temp = TRUE;
             }else{/*Nothing*/}
+            
             /*Washing start*/
             if(TRUE == flag_temp && TRUE == flag_water){
                 
+/*==============================calculate time of all program==============================*/
                 if(Raisne_Level_1 == rainse_level_status){
                         time_of_raisne = Raisne_time_1;
                 }else{
@@ -90,18 +89,11 @@ int main(void) {
                     time_of_washing = Wash_Level_2;
                 }else if(LEVEL_3 == wash_level_status){
                     time_of_washing = Wash_Level_3;
-                    ret = CCP_PWM_Set_Duty(&ccp1 , 50);
-                    ret = CCP_PWM_Start(&ccp1);
-                    while(minutes < Wash_Level_3){
-                        ret = Dc_Motor_Turn_Right(&dc_motor1);
-                        __delay_ms(1000);
-                        ret = Dc_Motor_Turn_Left(&dc_motor1);
-                        __delay_ms(1000);
-                    }
                 }else{/*Nothing*/}
                 
                 time_of_prog = time_of_washing + time_of_raisne;
                 num_on_7seg = time_of_prog;
+/*==============================washing system==============================*/
                 second_ = 0;
                 minutes = 0 ;
                 ret = Timer0_Intialization(&timer0);
@@ -125,6 +117,7 @@ int main(void) {
                         num_of_minutes++;
                     }
                 }
+/*==============================dry system==============================*/
                 second_ = 0;
                 minutes = 0 ;
                 ret = CCP_PWM_Set_Duty(&ccp1 , 100);
@@ -144,6 +137,7 @@ int main(void) {
                         num_of_minutes++;
                     }
                 }
+/*==============================end of washing system==============================*/
                 if(end_of_washing == 1){
                         ret = Dc_Motor_Stop(&dc_motor1);
                         ret = Led_Turn_Off(&led_motor);
@@ -172,8 +166,6 @@ void intialization (void)
     ret = EXT_INTX_Intialize(&Int_1);
     
     ret = timer3_init(&timer3);
-    //ret = Timer2_Intialization(&timer_2);
-    
     ret = servo_motor_intialize(&Water_drainage);
     
     ret = Dc_Motor_Intialize(&dc_motor1);
@@ -191,8 +183,8 @@ void intialization (void)
     
     ret = Led_Intialize(&led_motor);
 }
-
-void ADC_Temp_Smk_ISR(void)
+/*==============================ADC==============================*/
+void adc_isr(void)
 {
     if(0 == adc_flag){
         ret = ADC_Get_Conversion_Result(&adc_temp_wl ,&conv_result_temp);
@@ -202,7 +194,7 @@ void ADC_Temp_Smk_ISR(void)
         adc_flag = 0;
     }else{/*Nothing*/}
 }
-
+/*=========================real time by timer3=========================*/
 void timer3_isr(void){
     second_++;
     if (second_==60){
@@ -213,7 +205,7 @@ void timer3_isr(void){
         minutes=0;
     }
 }
-
+/*==============================seven segment==============================*/
 void timer0_isr(void){
     if(num_on_7seg >= 10){
     ret = GPIO_Pin_Write_Logic(&seg_en_1 ,Logic_High);

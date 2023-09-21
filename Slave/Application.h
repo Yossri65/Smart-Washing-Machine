@@ -57,35 +57,19 @@
 #define TRUE  1
 #define FALSE 0
 
+#define ZERO_INTIAT 0
+
 /* ------------------------------------Macro Function Declarations------------------ */
 
 /* ------------------------------------Data Type Declarations----------------------- */
-uint8 Start_status = 0;
-uint8 water_level_status = 0;
-uint8 wash_level_status = 0;
-uint8 rainse_level_status = 0;
-uint8 temp_level_status = 0;
+/*==============================SPI==============================*/
+uint8 Start_status = ZERO_INTIAT;
+uint8 water_level_status = ZERO_INTIAT;
+uint8 wash_level_status = ZERO_INTIAT;
+uint8 rainse_level_status = ZERO_INTIAT;
+uint8 temp_level_status = ZERO_INTIAT;
 
-uint8 flag_water = FALSE;
-uint8 flag_temp = FALSE;
-
-uint8 dummy = 0;
-uint16 conv_result_temp ,conv_result_water_level;
-uint8 adc_flag = 0 ;
-uint16 temperature = 0 , water_level = 0;
-
-volatile uint8 second_  = 0;
-uint8 minutes = 0;
-
-uint8 time_of_prog = 0; 
-uint8 time_of_washing = 0;
-uint8 time_of_raisne = 0;
-
-
-uint8 end_of_washing = 0;
-uint8 num_of_minutes = 0;
-
-servo_cfg Water_drainage = { .ccp_selection = CCP2_SELECT};
+uint8 array_slave[5];
 
 SPI_Config spi_slave =
 {
@@ -96,11 +80,22 @@ SPI_Config spi_slave =
    
 };
 
+uint8 dummy = ZERO_INTIAT;
 
-void ADC_Temp_Smk_ISR(void);
+uint8 flag_water = FALSE;
+uint8 flag_temp = FALSE;
+
+
+
+/*==============================ADC==============================*/
+uint16 conv_result_temp ,conv_result_water_level;
+uint8 adc_flag = 0 ;
+uint16 temperature = 0 , water_level = 0;
+
+void adc_isr(void);
 ADC_Conf_t adc_temp_wl =
 {
-  .ADC_IntterruptHandeler = ADC_Temp_Smk_ISR ,
+  .ADC_IntterruptHandeler = adc_isr ,
   .ADC_Acquisition_Time =  ADC_12_TAD ,
   .ADC_Conversion_Clock = ADC_CONVERSION_CLOCK_FOSC_DIV_2,
   .ADC_Channel = ADC_CHANNEL_AN1,
@@ -108,6 +103,17 @@ ADC_Conf_t adc_temp_wl =
   .voltage_ref = ADC_VOLTAGE_REF_DISABLE
 };
 
+/*==============================Real time by timer3==============================*/
+volatile uint8 second_  = ZERO_INTIAT;
+uint8 minutes = ZERO_INTIAT;
+
+uint8 time_of_prog = ZERO_INTIAT; 
+uint8 time_of_washing = ZERO_INTIAT;
+uint8 time_of_raisne = ZERO_INTIAT;
+
+
+uint8 end_of_washing = ZERO_INTIAT;
+uint8 num_of_minutes = ZERO_INTIAT;
 
 void timer3_isr(void);
 timer3_t timer3 =
@@ -116,10 +122,17 @@ timer3_t timer3 =
     .timer3_reg_rw_mode = TIMER1_16BIT_READ_,
     .timer3_mode = TIMER1_TIMER_MODE_,
     .timer3_prescaler = TIMER3_PRESCALER_DIV_BY_4,
-    .timer3_preload_value = 21786,
+    .timer3_preload_value = 21786   ,
 };
 
-Dc_Motor_t dc_motor1 =
+
+/*==============================Water_drainage==============================*/
+
+servo_cfg Water_drainage = { .ccp_selection = CCP2_SELECT};
+
+/*==============================washing motor and water motor==============================*/
+
+Dc_Motor_t dc_motor1 = /*washing motor*/
 {
   .pin[0].port = PortD_Index ,
   .pin[0].pin = pin4 ,
@@ -132,7 +145,7 @@ Dc_Motor_t dc_motor1 =
   
 };
 
-Dc_Motor_t dc_motor2 =
+Dc_Motor_t dc_motor2 = /* water motor*/
 {
   .pin[0].port = PortD_Index ,
   .pin[0].pin = pin6 ,
@@ -143,6 +156,13 @@ Dc_Motor_t dc_motor2 =
   .pin[1].logic = MOTOR_OFF ,
   .pin[1].direction = Direction_Outpt ,
   
+};
+
+Led_t led_motor =
+{
+  .Port_Name = PortC_Index,
+  .Pin_Name = pin0 ,
+  .Led_Status = LED_OFF
 };
 
 CCP_config_t ccp1 =
@@ -159,13 +179,12 @@ CCP_config_t ccp1 =
   .CCP2_IntterruptHandeler = NULL
 };
 
- Timer2_conf_t timer_2={
-       .Postscaler_Select = TIMER2_POSTSCALER_DIV_BY_1,
-       .Prescaler_Select = TIMER2_PRESCALER_DIV_BY_4,
-       .TIMER2_PRE_LOAD_VALUE = 0,
- };
+
+ /*==============================2 segment to show time ==============================*/
  
- Segment_t segment ={
+uint8 num_on_7seg = 0;
+
+Segment_t segment ={
   .segment_pin[0].port = PortB_Index ,
   .segment_pin[0].pin = pin4 ,
   .segment_pin[0].direction = Direction_Outpt,
@@ -235,12 +254,10 @@ Timer0_conf_t timer0 =
     .TIMER0_PRE_LOAD_VALUE = 48036,
 };
 
-Led_t led_motor =
-{
-  .Port_Name = PortC_Index,
-  .Pin_Name = pin0 ,
-  .Led_Status = LED_OFF
-};
+
+/*==============================buzzer system==============================*/
+
+volatile uint8 flag_stop = 1;
 
 void ISR_INT1(void);
 EXT_INTX_t Int_1 ={
@@ -251,7 +268,6 @@ EXT_INTX_t Int_1 ={
   .edge = EXT_INT_Raising_Edge,
   .source = EXT_INT1
 };
-
 
 Pin_Config_t Buzzer =
 {

@@ -5768,6 +5768,7 @@ int main(void) {
             array[3] = rainse_level_flag;
             array[4] = temp_level_flag;
         }else{
+
             if(flag_spi > 0){
             ret = GPIO_Pin_Write_Logic(&pin_enable , Logic_Low);
             ret = MSSP_SPI_Trancieve(array[0] ,&data_from_slave);

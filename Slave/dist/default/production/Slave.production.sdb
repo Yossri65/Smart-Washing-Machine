@@ -389,12 +389,7 @@ BAUDRATE_ASYN_16BIT_HIGH_SPEED 3
 BAUDRATE_SYN_16BIT 4
 BAUDRATE_SYN_8BIT 5
 ]
-"88 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave/Application.h
-[e E3204 . `uc
-CCP1_SELECT 0
-CCP2_SELECT 1
-]
-"101
+"96 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave/Application.h
 [e E3300 . `uc
 ADC_CHANNEL_AN0 0
 ADC_CHANNEL_AN1 1
@@ -429,12 +424,17 @@ ADC_12_TAD 5
 ADC_16_TAD 6
 ADC_20_TAD 7
 ]
-"113
+"119
 [e E3139 . `uc
 High_Priority 0
 Low_Priority 1
 ]
-"122
+"131
+[e E3204 . `uc
+CCP1_SELECT 0
+CCP2_SELECT 1
+]
+"135
 [e E2800 . `uc
 PortA_Index 0
 PortB_Index 1
@@ -460,7 +460,12 @@ Direction_input 1
 MOTOR_OFF 0
 MOTOR_ON 1
 ]
-"148
+"161
+[e E2842 . `uc
+LED_OFF 0
+LED_ON 1
+]
+"168
 [e E3217 . `uc
 CCP_Capture_Mode_ 0
 CCP_Compare_Mode_ 1
@@ -494,31 +499,7 @@ CCP_PRESCALER_DIV_BY_1 1
 CCP_PRESCALER_DIV_BY_4 4
 CCP_PRESCALER_DIV_BY_16 16
 ]
-"162
-[e E3143 . `uc
-TIMER2_POSTSCALER_DIV_BY_1 0
-TIMER2_POSTSCALER_DIV_BY_2 1
-TIMER2_POSTSCALER_DIV_BY_3 2
-TIMER2_POSTSCALER_DIV_BY_4 3
-TIMER2_POSTSCALER_DIV_BY_5 4
-TIMER2_POSTSCALER_DIV_BY_6 5
-TIMER2_POSTSCALER_DIV_BY_7 6
-TIMER2_POSTSCALER_DIV_BY_8 7
-TIMER2_POSTSCALER_DIV_BY_9 8
-TIMER2_POSTSCALER_DIV_BY_10 9
-TIMER2_POSTSCALER_DIV_BY_11 10
-TIMER2_POSTSCALER_DIV_BY_12 11
-TIMER2_POSTSCALER_DIV_BY_13 12
-TIMER2_POSTSCALER_DIV_BY_14 13
-TIMER2_POSTSCALER_DIV_BY_15 14
-TIMER2_POSTSCALER_DIV_BY_16 15
-]
-[e E3161 . `uc
-TIMER2_PRESCALER_DIV_BY_1 0
-TIMER2_PRESCALER_DIV_BY_4 1
-TIMER2_PRESCALER_DIV_BY_16 2
-]
-"168
+"187
 [e E2907 . `uc
 Common_Cathode 0
 Common_Anode 1
@@ -527,7 +508,7 @@ Common_Anode 1
 Logic_Low 0
 Logic_High 1
 ]
-"228
+"247
 [e E3366 . `uc
 TIMER0_PRESCALER_DIV_BY_2 0
 TIMER0_PRESCALER_DIV_BY_4 1
@@ -538,12 +519,7 @@ TIMER0_PRESCALER_DIV_BY_64 5
 TIMER0_PRESCALER_DIV_BY_128 6
 TIMER0_PRESCALER_DIV_BY_256 7
 ]
-"238
-[e E2842 . `uc
-LED_OFF 0
-LED_ON 1
-]
-"246
+"263
 [e E3261 . `uc
 EXT_INT0 0
 EXT_INT1 1
@@ -553,17 +529,17 @@ EXT_INT2 2
 EXT_INT_Faling_Edge 0
 EXT_INT_Raising_Edge 1
 ]
-"18 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
+"15 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
 [v _main main `(i  1 e 2 0 ]
-"166
+"160
 [v _intialization intialization `(v  1 e 1 0 ]
-"195
-[v _ADC_Temp_Smk_ISR ADC_Temp_Smk_ISR `(v  1 e 1 0 ]
-"206
+"187
+[v _adc_isr adc_isr `(v  1 e 1 0 ]
+"198
 [v _timer3_isr timer3_isr `(v  1 e 1 0 ]
-"217
+"209
 [v _timer0_isr timer0_isr `(v  1 e 1 0 ]
-"230
+"222
 [v _ISR_INT1 ISR_INT1 `(v  1 e 1 0 ]
 "7 C:\Program Files\Microchip\xc8\v2.41\pic\sources\c99\common\awdiv.c
 [v ___awdiv __awdiv `(i  1 e 2 0 ]
@@ -796,88 +772,98 @@ EXT_INT_Raising_Edge 1
 [v _USART_TX_ISR USART_TX_ISR `(v  1 e 1 0 ]
 "293
 [v _USART_RX_ISR USART_RX_ISR `(v  1 e 1 0 ]
-"63 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave/Application.h
+"66 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave/Application.h
 [v _Start_status Start_status `uc  1 e 1 0 ]
-"64
-[v _water_level_status water_level_status `uc  1 e 1 0 ]
-"65
-[v _wash_level_status wash_level_status `uc  1 e 1 0 ]
-"66
-[v _rainse_level_status rainse_level_status `uc  1 e 1 0 ]
 "67
-[v _temp_level_status temp_level_status `uc  1 e 1 0 ]
+[v _water_level_status water_level_status `uc  1 e 1 0 ]
+"68
+[v _wash_level_status wash_level_status `uc  1 e 1 0 ]
 "69
-[v _flag_water flag_water `uc  1 e 1 0 ]
+[v _rainse_level_status rainse_level_status `uc  1 e 1 0 ]
 "70
-[v _flag_temp flag_temp `uc  1 e 1 0 ]
-"73
-[v _conv_result_temp conv_result_temp `us  1 e 2 0 ]
-[v _conv_result_water_level conv_result_water_level `us  1 e 2 0 ]
-"74
-[v _adc_flag adc_flag `uc  1 e 1 0 ]
-"75
-[v _temperature temperature `us  1 e 2 0 ]
-[v _water_level water_level `us  1 e 2 0 ]
-"77
-[v _second_ second_ `VEuc  1 e 1 0 ]
-"78
-[v _minutes minutes `uc  1 e 1 0 ]
-"80
-[v _time_of_prog time_of_prog `uc  1 e 1 0 ]
-"81
-[v _time_of_washing time_of_washing `uc  1 e 1 0 ]
-"82
-[v _time_of_raisne time_of_raisne `uc  1 e 1 0 ]
-"85
-[v _end_of_washing end_of_washing `uc  1 e 1 0 ]
-"86
-[v _num_of_minutes num_of_minutes `uc  1 e 1 0 ]
-[s S488 . 1 `E2867 1 ccp_selection 1 0 ]
-"88
-[v _Water_drainage Water_drainage `S488  1 e 1 0 ]
+[v _temp_level_status temp_level_status `uc  1 e 1 0 ]
+"72
+[v _array_slave array_slave `[5]uc  1 e 5 0 ]
 [s S3461 . 1 `uc 1 ClockPolarity 1 0 :2:0 
 `uc 1 SampleSelect 1 0 :2:2 
 `uc 1 ClockSelect 1 0 :2:4 
 `uc 1 Reserved 1 0 :2:6 
 ]
-"90
+"74
 [s S3466 . 2 `uc 1 spi_serial_clk_mod_select 1 0 `S3461 1 spi_control 1 1 ]
 [v _spi_slave spi_slave `S3466  1 e 2 0 ]
+"85
+[v _flag_water flag_water `uc  1 e 1 0 ]
+"86
+[v _flag_temp flag_temp `uc  1 e 1 0 ]
+"91
+[v _conv_result_temp conv_result_temp `us  1 e 2 0 ]
+[v _conv_result_water_level conv_result_water_level `us  1 e 2 0 ]
+"92
+[v _adc_flag adc_flag `uc  1 e 1 0 ]
+"93
+[v _temperature temperature `us  1 e 2 0 ]
+[v _water_level water_level `us  1 e 2 0 ]
 [s S902 . 6 `*.37(v 1 ADC_IntterruptHandeler 2 0 `E2806 1 ADC_Channel 1 2 `E2831 1 ADC_Conversion_Clock 1 3 `E2821 1 ADC_Acquisition_Time 1 4 `uc 1 voltage_ref 1 5 :1:0 
 `uc 1 format_status 1 5 :1:1 
 `uc 1 ADC_Resreved 1 5 :6:2 
 ]
-"101
+"96
 [v _adc_temp_wl adc_temp_wl `S902  1 e 6 0 ]
+"107
+[v _second_ second_ `VEuc  1 e 1 0 ]
+"108
+[v _minutes minutes `uc  1 e 1 0 ]
+"110
+[v _time_of_prog time_of_prog `uc  1 e 1 0 ]
+"111
+[v _time_of_washing time_of_washing `uc  1 e 1 0 ]
+"112
+[v _time_of_raisne time_of_raisne `uc  1 e 1 0 ]
+"115
+[v _end_of_washing end_of_washing `uc  1 e 1 0 ]
+"116
+[v _num_of_minutes num_of_minutes `uc  1 e 1 0 ]
 [s S4147 . 6 `*.37(v 1 TIMER3_InterruptHandler 2 0 `E2802 1 priority 1 2 `us 1 timer3_preload_value 2 3 `uc 1 timer3_prescaler 1 5 :2:0 
 `uc 1 timer3_mode 1 5 :1:2 
 `uc 1 timer3_counter_mode 1 5 :1:3 
 `uc 1 timer3_reg_rw_mode 1 5 :1:4 
 `uc 1 timer3_reserved 1 5 :3:5 
 ]
-"113
+"119
 [v _timer3 timer3 `S4147  1 e 6 0 ]
+[s S488 . 1 `E2867 1 ccp_selection 1 0 ]
+"131
+[v _Water_drainage Water_drainage `S488  1 e 1 0 ]
 [s S24 . 1 `uc 1 port 1 0 :3:0 
 `uc 1 pin 1 0 :3:3 
 `uc 1 direction 1 0 :1:6 
 `uc 1 logic 1 0 :1:7 
 ]
-"122
+"135
 [s S276 . 2 `[2]S24 1 pin 2 0 ]
 [v _dc_motor1 dc_motor1 `S276  1 e 2 0 ]
-"135
-[v _dc_motor2 dc_motor2 `S276  1 e 2 0 ]
 "148
+[v _dc_motor2 dc_motor2 `S276  1 e 2 0 ]
+[s S330 . 1 `uc 1 Port_Name 1 0 :3:0 
+`uc 1 Pin_Name 1 0 :3:3 
+`uc 1 Led_Status 1 0 :1:6 
+]
+"161
+[v _led_motor led_motor `S330  1 e 1 0 ]
+"168
 [s S556 . 13 `E2867 1 CCP_Select 1 0 `E2880 1 CCP_Mode 1 1 `uc 1 ccp_mode_varient 1 2 `S24 1 CCP_pin 1 3 `E2885 1 Capture_Timer 1 4 `ui 1 PWM_Frequncy 2 5 `E2844 1 Postscaler_Select 1 7 `E2862 1 Prescaler_Select 1 8 `*.37(v 1 CCP1_IntterruptHandeler 2 9 `*.37(v 1 CCP2_IntterruptHandeler 2 11 ]
 [v _ccp1 ccp1 `S556  1 e 13 0 ]
-"168
+"185
+[v _num_on_7seg num_on_7seg `uc  1 e 1 0 ]
+"187
 [s S775 . 5 `[4]S24 1 segment_pin 4 0 `E2800 1 segment_type 1 4 ]
 [v _segment segment `S775  1 e 5 0 ]
-"191
+"210
 [v _segment2 segment2 `S775  1 e 5 0 ]
-"214
+"233
 [v _seg_en_1 seg_en_1 `S24  1 e 1 0 ]
-"220
+"239
 [v _seg_en_2 seg_en_2 `S24  1 e 1 0 ]
 [s S3729 . 6 `*.37(v 1 TIMER0_IntterruptHandeler 2 0 `E2806 1 Prescaler_Select 1 2 `us 1 TIMER0_PRE_LOAD_VALUE 2 3 `uc 1 TIMER0_PRESCALER_STATUS 1 5 :1:0 
 `uc 1 Timer0_counter_mode_Source_Edge 1 5 :1:1 
@@ -885,29 +871,17 @@ EXT_INT_Raising_Edge 1
 `uc 1 Timer0_SELECT_BIT_Mode 1 5 :1:3 
 `uc 1 Timer0_Resreved 1 5 :4:4 
 ]
-"228
+"247
 [v _timer0 timer0 `S3729  1 e 6 0 ]
-[s S330 . 1 `uc 1 Port_Name 1 0 :3:0 
-`uc 1 Pin_Name 1 0 :3:3 
-`uc 1 Led_Status 1 0 :1:6 
-]
-"238
-[v _led_motor led_motor `S330  1 e 1 0 ]
-"246
+"260
+[v _flag_stop flag_stop `VEuc  1 e 1 0 ]
+"263
 [s S2844 . 6 `*.37(v 1 Interrupt_Handler 2 0 `S24 1 EXT_pin 1 2 `E2806 1 source 1 3 `E2811 1 edge 1 4 `E2262 1 priority 1 5 ]
 [v _Int_1 Int_1 `S2844  1 e 6 0 ]
-"256
+"272
 [v _Buzzer Buzzer `S24  1 e 1 0 ]
 "10 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
 [v _ret ret `ui  1 e 2 0 ]
-"13
-[v _flag flag `VEuc  1 e 1 0 ]
-"14
-[v _array_slave array_slave `[5]uc  1 e 5 0 ]
-"15
-[v _flag_stop flag_stop `VEuc  1 e 1 0 ]
-"16
-[v _num_on_7seg num_on_7seg `uc  1 e 1 0 ]
 "53 C:/Program Files/Microchip/MPLABX/v6.05/packs/Microchip/PIC18Fxxxx_DFP/1.3.36/xc8\pic\include\proc\pic18f4620.h
 [v _PORTA PORTA `VEuc  1 e 1 @3968 ]
 "190
@@ -1647,12 +1621,12 @@ EXT_INT_Raising_Edge 1
 [v _EUSART_FRAMINGERRORDefaultHandler_ EUSART_FRAMINGERRORDefaultHandler_ `*.37(v  1 e 2 0 ]
 "15
 [v _EUSART_OVERRUNERRORDefaultHandler_ EUSART_OVERRUNERRORDefaultHandler_ `*.37(v  1 e 2 0 ]
-"18 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
+"15 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
 [v _main main `(i  1 e 2 0 ]
 {
-"43
+"40
 [v main@count count `uc  1 a 1 53 ]
-"164
+"158
 } 0
 "59 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\ECU_Layer/Servo_Motor/servo_motor.c
 [v _servo_motor_set_angle servo_motor_set_angle `(ui  1 e 2 0 ]
@@ -1720,10 +1694,10 @@ EXT_INT_Raising_Edge 1
 [v CCP_PWM_Set_Duty@_duty _duty `Cf  1 p 4 33 ]
 "205
 } 0
-"166 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
+"160 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
 [v _intialization intialization `(v  1 e 1 0 ]
 {
-"193
+"185
 } 0
 "21 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\MCAL_Layer/Timer3/mcal_timer3.c
 [v _timer3_init timer3_init `(ui  1 e 2 0 ]
@@ -1858,17 +1832,17 @@ EXT_INT_Raising_Edge 1
 "8 C:\Program Files\Microchip\xc8\v2.41\pic\sources\c99\common\sprcmul.c
 [v ___flmul __flmul `(d  1 e 4 0 ]
 {
-[s S5460 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
+[s S5430 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
 "13
-[s S5465 . 4 `s 1 wordA 2 0 `s 1 wordB 2 2 ]
-[u S5468 . 4 `l 1 i 4 0 `d 1 f 4 0 `S5460 1 fAsBytes 4 0 `S5465 1 fAsWords 4 0 ]
-[v ___flmul@prod prod `S5468  1 a 4 15 ]
+[s S5435 . 4 `s 1 wordA 2 0 `s 1 wordB 2 2 ]
+[u S5438 . 4 `l 1 i 4 0 `d 1 f 4 0 `S5430 1 fAsBytes 4 0 `S5435 1 fAsWords 4 0 ]
+[v ___flmul@prod prod `S5438  1 a 4 15 ]
 "12
 [v ___flmul@grs grs `ul  1 a 4 10 ]
-[s S5536 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
+[s S5506 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
 "14
-[u S5539 . 2 `s 1 i 2 0 `us 1 n 2 0 `S5536 1 nAsBytes 2 0 ]
-[v ___flmul@temp temp `S5539  1 a 2 19 ]
+[u S5509 . 2 `s 1 i 2 0 `us 1 n 2 0 `S5506 1 nAsBytes 2 0 ]
+[v ___flmul@temp temp `S5509  1 a 2 19 ]
 "10
 [v ___flmul@bexp bexp `uc  1 a 1 14 ]
 "11
@@ -2559,10 +2533,10 @@ EXT_INT_Raising_Edge 1
 {
 "132
 } 0
-"206 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
+"198 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
 [v _timer3_isr timer3_isr `(v  1 e 1 0 ]
 {
-"215
+"207
 } 0
 "112 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\MCAL_Layer/Timer2/mcal_timer2.c
 [v _TIMER2_ISR TIMER2_ISR `(v  1 e 1 0 ]
@@ -2579,10 +2553,10 @@ EXT_INT_Raising_Edge 1
 {
 "187
 } 0
-"217 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
+"209 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
 [v _timer0_isr timer0_isr `(v  1 e 1 0 ]
 {
-"228
+"220
 } 0
 "7 C:\Program Files\Microchip\xc8\v2.41\pic\sources\c99\common\awmod.c
 [v ___awmod __awmod `(i  1 e 2 0 ]
@@ -2700,10 +2674,10 @@ EXT_INT_Raising_Edge 1
 {
 "92
 } 0
-"230 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
+"222 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
 [v _ISR_INT1 ISR_INT1 `(v  1 e 1 0 ]
 {
-"232
+"224
 } 0
 "121 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\MCAL_Layer/ECCP/hal_eccp.c
 [v _ECCP_ISR ECCP_ISR `(v  1 e 1 0 ]
@@ -2725,10 +2699,10 @@ EXT_INT_Raising_Edge 1
 {
 "339
 } 0
-"195 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
-[v _ADC_Temp_Smk_ISR ADC_Temp_Smk_ISR `(v  1 e 1 0 ]
+"187 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\Application.c
+[v _adc_isr adc_isr `(v  1 e 1 0 ]
 {
-"204
+"196
 } 0
 "201 C:\Users\Yossri\Downloads\projects\Waching Machine Project\Slave\MCAL_Layer/MCAL_ADC/mcal_adc.c
 [v _ADC_Get_Conversion_Result ADC_Get_Conversion_Result `(ui  1 e 2 0 ]

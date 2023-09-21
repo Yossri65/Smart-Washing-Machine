@@ -5532,20 +5532,47 @@ Std_ReturnType MSSP_I2C_Master_Read_Blocking(const mssp_i2c_t *i2c_obj, uint8 ac
 Std_ReturnType MSSP_I2C_Master_Write_NBlocking(const mssp_i2c_t *i2c_obj, uint8 i2c_data, uint8 *_ack);
 Std_ReturnType MSSP_I2C_Master_Read_NBlocking(const mssp_i2c_t *i2c_obj, uint8 ack, uint8 *i2c_data);
 # 26 "./Application.h" 2
-# 63 "./Application.h"
+# 66 "./Application.h"
 uint8 Start_status = 0;
 uint8 water_level_status = 0;
 uint8 wash_level_status = 0;
 uint8 rainse_level_status = 0;
 uint8 temp_level_status = 0;
 
+uint8 array_slave[5];
+
+SPI_Config spi_slave =
+{
+  .spi_control.ClockPolarity = 1 ,
+  .spi_control.ClockSelect = 1 ,
+  .spi_control.SampleSelect =0,
+  .spi_serial_clk_mod_select = 4 ,
+
+};
+
+uint8 dummy = 0;
+
 uint8 flag_water = 0;
 uint8 flag_temp = 0;
 
-uint8 dummy = 0;
+
+
+
 uint16 conv_result_temp ,conv_result_water_level;
 uint8 adc_flag = 0 ;
 uint16 temperature = 0 , water_level = 0;
+
+void adc_isr(void);
+ADC_Conf_t adc_temp_wl =
+{
+  .ADC_IntterruptHandeler = adc_isr ,
+  .ADC_Acquisition_Time = ADC_12_TAD ,
+  .ADC_Conversion_Clock = ADC_CONVERSION_CLOCK_FOSC_DIV_2,
+  .ADC_Channel = ADC_CHANNEL_AN1,
+  .format_status = 1 ,
+  .voltage_ref = 0x00U
+};
+
 
 volatile uint8 second_ = 0;
 uint8 minutes = 0;
@@ -5558,30 +5585,6 @@ uint8 time_of_raisne = 0;
 uint8 end_of_washing = 0;
 uint8 num_of_minutes = 0;
 
-servo_cfg Water_drainage = { .ccp_selection = CCP2_SELECT};
-
-SPI_Config spi_slave =
-{
-  .spi_control.ClockPolarity = 1 ,
-  .spi_control.ClockSelect = 1 ,
-  .spi_control.SampleSelect =0,
-  .spi_serial_clk_mod_select = 4 ,
-
-};
-
-
-void ADC_Temp_Smk_ISR(void);
-ADC_Conf_t adc_temp_wl =
-{
-  .ADC_IntterruptHandeler = ADC_Temp_Smk_ISR ,
-  .ADC_Acquisition_Time = ADC_12_TAD ,
-  .ADC_Conversion_Clock = ADC_CONVERSION_CLOCK_FOSC_DIV_2,
-  .ADC_Channel = ADC_CHANNEL_AN1,
-  .format_status = 1 ,
-  .voltage_ref = 0x00U
-};
-
-
 void timer3_isr(void);
 timer3_t timer3 =
 {
@@ -5589,8 +5592,15 @@ timer3_t timer3 =
     .timer3_reg_rw_mode = 0,
     .timer3_mode = 0,
     .timer3_prescaler = 2,
-    .timer3_preload_value = 21786,
+    .timer3_preload_value = 21786 ,
 };
+
+
+
+
+servo_cfg Water_drainage = { .ccp_selection = CCP2_SELECT};
+
+
 
 Dc_Motor_t dc_motor1 =
 {
@@ -5618,6 +5628,13 @@ Dc_Motor_t dc_motor2 =
 
 };
 
+Led_t led_motor =
+{
+  .Port_Name = PortC_Index,
+  .Pin_Name = pin0 ,
+  .Led_Status = LED_OFF
+};
+
 CCP_config_t ccp1 =
 {
   .CCP_Mode = CCP_PWM_Mode_Select,
@@ -5632,13 +5649,12 @@ CCP_config_t ccp1 =
   .CCP2_IntterruptHandeler = ((void*)0)
 };
 
- Timer2_conf_t timer_2={
-       .Postscaler_Select = TIMER2_POSTSCALER_DIV_BY_1,
-       .Prescaler_Select = TIMER2_PRESCALER_DIV_BY_4,
-       .TIMER2_PRE_LOAD_VALUE = 0,
- };
 
- Segment_t segment ={
+
+
+uint8 num_on_7seg = 0;
+
+Segment_t segment ={
   .segment_pin[0].port = PortB_Index ,
   .segment_pin[0].pin = pin4 ,
   .segment_pin[0].direction = Direction_Outpt,
@@ -5708,12 +5724,10 @@ Timer0_conf_t timer0 =
     .TIMER0_PRE_LOAD_VALUE = 48036,
 };
 
-Led_t led_motor =
-{
-  .Port_Name = PortC_Index,
-  .Pin_Name = pin0 ,
-  .Led_Status = LED_OFF
-};
+
+
+
+volatile uint8 flag_stop = 1;
 
 void ISR_INT1(void);
 EXT_INTX_t Int_1 ={
@@ -5724,7 +5738,6 @@ EXT_INTX_t Int_1 ={
   .edge = EXT_INT_Raising_Edge,
   .source = EXT_INT1
 };
-
 
 Pin_Config_t Buzzer =
 {
@@ -5738,10 +5751,7 @@ Pin_Config_t Buzzer =
 Std_ReturnType ret = (Std_ReturnType)0x00;
 void intialization (void);
 
-volatile uint8 flag = 0;
-uint8 array_slave[5];
-volatile uint8 flag_stop = 1;
-uint8 num_on_7seg = 0;
+
 
 int main(void) {
     intialization();
@@ -5804,7 +5814,9 @@ int main(void) {
                 flag_temp = 1;
             }else{ }
 
+
             if(1 == flag_temp && 1 == flag_water){
+
 
                 if(1 == rainse_level_status){
                         time_of_raisne = 3;
@@ -5818,18 +5830,11 @@ int main(void) {
                     time_of_washing = 8;
                 }else if(3 == wash_level_status){
                     time_of_washing = 12;
-                    ret = CCP_PWM_Set_Duty(&ccp1 , 50);
-                    ret = CCP_PWM_Start(&ccp1);
-                    while(minutes < 12){
-                        ret = Dc_Motor_Turn_Right(&dc_motor1);
-                        _delay((unsigned long)((1000)*(700000UL/4000.0)));
-                        ret = Dc_Motor_Turn_Left(&dc_motor1);
-                        _delay((unsigned long)((1000)*(700000UL/4000.0)));
-                    }
                 }else{ }
 
                 time_of_prog = time_of_washing + time_of_raisne;
                 num_on_7seg = time_of_prog;
+
                 second_ = 0;
                 minutes = 0 ;
                 ret = Timer0_Intialization(&timer0);
@@ -5853,6 +5858,7 @@ int main(void) {
                         num_of_minutes++;
                     }
                 }
+
                 second_ = 0;
                 minutes = 0 ;
                 ret = CCP_PWM_Set_Duty(&ccp1 , 100);
@@ -5872,6 +5878,7 @@ int main(void) {
                         num_of_minutes++;
                     }
                 }
+
                 if(end_of_washing == 1){
                         ret = Dc_Motor_Stop(&dc_motor1);
                         ret = Led_Turn_Off(&led_motor);
@@ -5900,8 +5907,6 @@ void intialization (void)
     ret = EXT_INTX_Intialize(&Int_1);
 
     ret = timer3_init(&timer3);
-
-
     ret = servo_motor_intialize(&Water_drainage);
 
     ret = Dc_Motor_Intialize(&dc_motor1);
@@ -5920,7 +5925,7 @@ void intialization (void)
     ret = Led_Intialize(&led_motor);
 }
 
-void ADC_Temp_Smk_ISR(void)
+void adc_isr(void)
 {
     if(0 == adc_flag){
         ret = ADC_Get_Conversion_Result(&adc_temp_wl ,&conv_result_temp);
